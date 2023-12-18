@@ -37,3 +37,18 @@ export const getLoggedUserData = async (): Promise<AxiosResponse> => {
         throw error;
     }
 };
+
+interface Sensor {
+    id: string;
+    value: number;
+  }
+  
+  export const getPublicSensors = async (): Promise<Sensor[]> => {
+    try {
+      const response = await axios.get<{ sensors: Sensor[] }>('https://smartsensify.onrender.com/api/sensors');
+      return response.data.sensors;
+    } catch (error) {
+      console.error('Error fetching public sensor data:', error);
+      throw error; 
+    }
+  };
