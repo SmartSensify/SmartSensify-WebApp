@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-interface Sensor {
-  _id: string; 
-  value: number;
-}
+import Sensor from '../interfaces/Sensor';
+import { getPublicSensors } from '../utils/api';
 
 const SensorData: React.FC = () => {
   const [sensorData, setSensorData] = useState<Sensor[]>([]);
@@ -12,8 +9,7 @@ const SensorData: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<{ sensors: Sensor[] }>('https://smartsensify.onrender.com/api/sensors');
-        setSensorData(response.data.sensors);
+        setSensorData(await getPublicSensors());
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -29,7 +25,9 @@ const SensorData: React.FC = () => {
         {Array.isArray(sensorData) && sensorData.length > 0 ? (
           sensorData.map((sensor, index) => (
             <li key={index}>
-              Sensor ID: {sensor._id}, Value: {sensor.value}
+              <h3>{sensor.name}</h3>
+              <h5>Sensor ID: {sensor._id}</h5>
+              <p>{sensor.description}</p>
             </li>
           ))
         ) : (

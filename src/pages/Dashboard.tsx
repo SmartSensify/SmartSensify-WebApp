@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Utils
 import { removeAuthToken } from '../utils/auth';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -33,8 +34,9 @@ const Dashboard: React.FC = () => {
                 </div>
             )}
             <button onClick={handleLogout}>Logout</button>
+            <Link to="/dashboard/groups">Groups</Link> 
         </div>
-    );
+    ); // TODO: Make this link relative
 };
 
 export default Dashboard;
