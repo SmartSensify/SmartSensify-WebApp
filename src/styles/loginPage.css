@@ -7,10 +7,28 @@ a {
     color: inherit;
 }
 
-body {
+header {
+    height: 80px;
+}
+
+main {
+    height: calc(100vh - 80px);
+    background-color: #F3F3F3;
+}
+
+#page-login {
     background-image: url('../../public/images/background_login.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 
     color: white;
+}
+
+#image-logo {
+    width: 256px;
+}
+
+.scrollable-container {
+     /* Set the maximum height for the scrollable container */
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
 }
