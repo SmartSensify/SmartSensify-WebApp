@@ -1,3 +1,16 @@
 * {
-    background-color: lightblue; /* Just test, delete this Michael please */
+    /* background-color: lightblue; Just test, delete this Michael please */
+}
+
+a { 
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    background-image: url('../../public/images/background_login.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    color: white;
 }
