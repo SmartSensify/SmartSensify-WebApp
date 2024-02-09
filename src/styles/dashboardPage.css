@@ -32,3 +32,17 @@
 .button-nav-bottom {
     color: #C0D3C8;
 }
+
+/* HEADER */
+.header-notifications {
+    cursor: pointer;
+}
+
+.header-username-image, #image-user {
+    height: 40px;
+}
+
+.header-username-text {
+    width: 100px;
+    text-align: center;
+}

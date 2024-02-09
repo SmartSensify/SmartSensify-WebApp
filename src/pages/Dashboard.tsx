@@ -8,7 +8,10 @@ import { Link } from 'react-router-dom';
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/dashboardPage.css';
+
+
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -44,31 +47,29 @@ const Dashboard: React.FC = () => {
             {/* Left Menu Pane */}
             <div className="row h-100 overflow-hidden">
                 <nav className="col-md-3 col-lg-2 d-md-block sidebar text-white p-3">
-                    <div className="text-center">
-                        <img id="image-logo" className="img-fluid mb-3" src="/images/smartsensify_logo_white.png" alt="Logo" />
+                    <div className="text-center mb-4">
+                        <img id="image-logo" className="img-fluid mb-3 noselect" src="/images/smartsensify_logo_white.png" alt="Logo" />
                     </div>
                     <div>
                         <div className="nav flex-column">
                             <a href="#">
-                                <div className="nav-button">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         dashboard
                                     </span>
                                     Overview
                                 </div>
                             </a>
-                            <a href="#">
-                                <div className="nav-button">
+                            <Link to="/dashboard/groups">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         sensors
                                     </span>
-                                    <Link to="/dashboard/groups">
-                                        Sensors
-                                    </Link>
+                                    Sensors
                                 </div>
-                            </a>
+                            </Link>
                             <a href="#">
-                                <div className="nav-button">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         notifications
                                     </span>
@@ -76,7 +77,7 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </a>
                             <a href="#">
-                                <div className="nav-button">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         monitoring
                                     </span>
@@ -84,7 +85,7 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </a>
                             <a href="#">
-                                <div className="nav-button">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         problem
                                     </span>
@@ -92,7 +93,7 @@ const Dashboard: React.FC = () => {
                                 </div>
                             </a>
                             <a href="#">
-                                <div className="nav-button">
+                                <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         settings
                                     </span>
@@ -101,7 +102,7 @@ const Dashboard: React.FC = () => {
                             </a>
                         </div>
                     </div>
-                    <div className="mt-auto">
+                    <div className="mt-4">
                         <a href="mailto:jakub.robert.krok@gmail.com">
                             <button className="btn button-nav-bottom">
                                 <i className="bi bi-google"></i> Contact Us
@@ -121,17 +122,56 @@ const Dashboard: React.FC = () => {
                     <header className="d-flex justify-content-between align-items-center bg-white p-2">
                         <div>
                             Welcome back @
-                            {userData && (
-                                <>
-                                    {userData.username}
-                                </>
-                            )}
+
                         </div>
-                        {userData && (
-                            <>
-                                {userData.email}
-                            </>
-                        )}
+                        <div className='header-right d-flex align-items-center'>
+                            <div className='header-notifications noselect'>
+                                <span className="nav-icon-center material-symbols-outlined">
+                                    notifications
+                                </span>
+                            </div>
+                            <div className="dropdown">
+                                <div className="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="true">
+                                    <div className='header-username cursor-pointer d-flex align-items-center noselect'>
+                                        <div className='header-username-image'>
+                                            <img id="image-user" className="img-fluid mb-3 rounded-circle" src="/images/person.png" alt="Person image" />
+                                        </div>
+                                        <div className='header-username-text'>
+                                            {userData?.username || "Username loading..."}
+                                        </div>
+                                        <div>
+                                            <span className="nav-icon-center material-symbols-outlined">
+                                                expand_more
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul className="dropdown-menu p-3" aria-labelledby="dropdownMenuButton1">
+                                    <li className="mb-4">
+                                        {userData?.email || "email loading"}
+                                    </li>
+                                    <li className="mb-2">
+                                        <div className="form-check form-switch">
+                                            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                                            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Dark Mode</label>
+                                        </div>
+                                    </li>
+                                    <li className="mb-2">
+                                        <select className="form-select" aria-label="Default select example">
+                                            <option selected>English</option>
+                                            <option value="polish">Polish</option>
+                                            <option value="chineese">Chinese</option>
+                                        </select>
+                                    </li>
+                                    <li className="mb-2">
+                                        <button className="btn btn-danger w-100" onClick={handleLogout}>
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
                     </header>
 
                     {/* Main Content */}
