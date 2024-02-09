@@ -7,6 +7,10 @@ a {
     color: inherit;
 }
 
+nav {
+    background-color: #1C6C3F;
+}
+
 header {
     height: 80px;
 }
@@ -31,4 +35,20 @@ main {
 .scrollable-container {
      /* Set the maximum height for the scrollable container */
     overflow-y: auto; /* Add vertical scrollbar if content overflows */
+}
+
+/* DASHBOARD */
+.nav-button, .button-green {
+    color: white;
+    height: 50px;
+    transition: background-color 0.1s;
+}
+
+.nav-button {
+    line-height: 50px;
+    margin: 5px 0;
+}
+
+.nav-button:hover, .button-green:hover {
+    background-color: #1F7845;
 }

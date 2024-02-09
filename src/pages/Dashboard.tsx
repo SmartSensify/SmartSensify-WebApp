@@ -43,39 +43,75 @@ const Dashboard: React.FC = () => {
 
             {/* Left Menu Pane */}
             <div className="row h-100 overflow-hidden">
-                <nav className="col-md-3 col-lg-2 d-md-block bg-success sidebar text-white p-3">
+                <nav className="col-md-3 col-lg-2 d-md-block sidebar text-white p-3">
                     <div className="text-center">
-                        <img id="image-logo" className="img-fluid mb-3" src="/images/smartsensify_logo_white.png" alt="Logo"/>
+                        <img id="image-logo" className="img-fluid mb-3" src="/images/smartsensify_logo_white.png" alt="Logo" />
                     </div>
-                    <ul className="nav flex-column">
-                        <li className="nav-item">
-                            <a className="nav-link active" href="#">
-                                Overview
+                    <div>
+                        <div className="nav flex-column">
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        dashboard
+                                    </span>
+                                    Overview
+                                </div>
                             </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Alerts
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        sensors
+                                    </span>
+                                    <Link to="/dashboard/groups">
+                                        Sensors
+                                    </Link>
+                                </div>
                             </a>
-                        </li>
-                        <li className="nav-item">
-                            <Link to="/dashboard/groups">Groups
-                                Sensors
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Settings
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        notifications
+                                    </span>
+                                    Alerts
+                                </div>
                             </a>
-                        </li>
-                    </ul>
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        monitoring
+                                    </span>
+                                    Analisis
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        problem
+                                    </span>
+                                    Reports
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div className="nav-button">
+                                    <span className="nav-icon-center material-symbols-outlined">
+                                        settings
+                                    </span>
+                                    Settings
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                     <div className="mt-auto">
-                        <button className="btn btn-light btn-block mb-2">
-                            <i className="bi bi-google"></i> Contact Us
+                        <a href="mailto:jakub.robert.krok@gmail.com">
+                            <button className="btn button-nav-bottom">
+                                <i className="bi bi-google"></i> Contact Us
+                            </button>
+                        </a>
+                        <button className="btn button-nav-bottom" onClick={handleLogout}>
+                            <i className="bi bi-google "></i> Logout
                         </button>
-                        <button className="btn btn-light btn-block" onClick={handleLogout}>
-                            <i className="bi bi-google"></i> Logout
-                        </button>
+                        <div className="nav-bottom">
+                        </div>
                     </div>
                 </nav>
 
@@ -100,9 +136,9 @@ const Dashboard: React.FC = () => {
 
                     {/* Main Content */}
                     <main className="p-3 scrollable-container">
-                    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                    <br />hello<br />hello<br />hello<br />hello<br />hello<br /><br /><br /><br /><br /><br /><br />
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                        <br />hello<br />hello<br />hello<br />hello<br />hello<br /><br /><br /><br /><br /><br /><br />
                     </main>
                 </div>
             </div>
