@@ -30,7 +30,7 @@ const Groups: React.FC = () => {
 
     return (
         <div id="main-content" data-name="Groups">
-            <h1>Sensor Data</h1>
+            {/* <h1>Sensor Data</h1>
             <ul>
                 {Array.isArray(groupData) && groupData.length > 0 ? (
                     groupData.map((group, index) => (
@@ -39,7 +39,18 @@ const Groups: React.FC = () => {
                 ) : (
                     <li>No groups data available</li>
                 )}
-            </ul>
+            </ul> */}
+            <div className="container">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {Array.isArray(groupData) && groupData.length > 0 ? (
+                        groupData.map((group, index) => (
+                            <GroupItem key={index} group={group} handleGroupClick={handleGroupClick} />
+                        ))
+                    ) : (
+                        <li>No groups data available</li>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

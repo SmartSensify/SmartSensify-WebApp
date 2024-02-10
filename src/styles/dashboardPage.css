@@ -36,11 +36,22 @@
     cursor: pointer;
 }
 
-.header-username-image, #image-user {
+.header-username-image,
+#image-user {
     height: 40px;
 }
 
 .header-username-text {
     width: 100px;
     text-align: center;
+}
+
+/* MAIN */
+
+.transition-bg {
+    transition: background-color 0.1s ease-in-out;
+}
+
+.group-card:hover {
+    background-color: rgba(var(--bs-secondary-bg-rgb)) !important;
 }

@@ -87,3 +87,19 @@ export const getPrivateSensors = async (groupId: String): Promise<Sensor[]> => {
         throw error;
     }
 };
+
+export const getCertainSensor = async (sensorId: String): Promise<Sensor> => {
+    try {
+        if (!isAuthenticated()) throw new Error('User not authenticated');
+
+        const response = await axios.get<{ sensor: Sensor }>(`${BASE_URL}/sensors/${sensorId}`, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+        return response.data.sensor;
+    } catch (error) {
+        console.error('Error fetching sensor data:', error);
+        throw error;
+    }
+}

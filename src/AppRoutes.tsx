@@ -14,8 +14,9 @@ import Analysis from "./pages/Dashboard/Analysis";
 import Groups from "./pages/Dashboard/Groups";
 import Overview from "./pages/Dashboard/Overview";
 import Reports from "./pages/Dashboard/Reports";
-import Sensors from "./pages/Dashboard/Sensors";
+import GroupSensors from "./pages/Dashboard/GroupSensors";
 import Settings from "./pages/Dashboard/Settings";
+import Sensors from "./pages/Dashboard/Sensors";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -25,7 +26,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/dashboard" element={<RouteGuard element={<Dashboard />} />}>
         <Route path="overview" element={<Overview />} />
         <Route path="groups" element={<Groups />} />
-        <Route path="groups/:groupId" element={<Sensors />} />
+        <Route path="groups/:groupId" element={<GroupSensors />} />
+        <Route path="sensors/:sensorId" element={<Sensors />} />
         <Route path="alerts" element={<Alerts />} />
         <Route path="analysis" element={<Analysis />} />
         <Route path="reports" element={<Reports />} />

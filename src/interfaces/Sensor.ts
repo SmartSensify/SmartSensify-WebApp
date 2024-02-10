@@ -4,7 +4,7 @@ interface Sensor {
     description?: string;
     secretKey: string;
     isPublic: boolean;
-    types: string[];
+    type: string[];
     alerts: string[];
     lastSettingsUpdateTimestamp?: Date;
     settings: {

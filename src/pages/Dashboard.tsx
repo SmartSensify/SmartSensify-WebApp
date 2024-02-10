@@ -161,7 +161,7 @@ const Dashboard: React.FC = () => {
                     {/* Header */}
                     <header className="d-flex justify-content-between align-items-center bg-body-secondary text-body-secondary p-2">
                         <div>
-                            <p id="header-text" className="lh-sm">{headerText}</p>
+                            <p id="header-text" className="lh-sm"><h3>{headerText}</h3></p>
                         </div>
                         <div className='header-right d-flex align-items-center'>
                             <div className='header-notifications noselect'>
@@ -214,7 +214,7 @@ const Dashboard: React.FC = () => {
                     </header>
 
                     {/* Main Content */}
-                    <main className="p-3 scrollable-container bg-body text-body">
+                    <main className="p-3 pt-5 scrollable-container bg-body text-body">
                         <Outlet />
                     </main>
                 </div>
