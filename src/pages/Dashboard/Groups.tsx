@@ -5,6 +5,9 @@ import { getPrivateGroups } from '../../utils/api';
 import Group from '../../interfaces/Group';
 import { useNavigate } from 'react-router-dom';
 
+// Components
+import GroupItem from '../../components/dashboard/GroupItem';
+
 const Groups: React.FC = () => {
     const [groupData, setgroupData] = useState<Group[]>([]);
     const navigate = useNavigate();
@@ -26,19 +29,12 @@ const Groups: React.FC = () => {
     };
 
     return (
-        <div>
+        <div id="main-content" data-name="Groups">
             <h1>Sensor Data</h1>
             <ul>
                 {Array.isArray(groupData) && groupData.length > 0 ? (
                     groupData.map((group, index) => (
-                        <li key={index}>
-                            <h3>{group.name}</h3>
-                            <h5>Grpup ID: {group._id}</h5>
-                            <p>{group.description}</p>
-                            <button onClick={() => handleGroupClick(group._id)}>
-                                View Sensors
-                            </button>
-                        </li>
+                        <GroupItem key={index} group={group} handleGroupClick={handleGroupClick} />
                     ))
                 ) : (
                     <li>No groups data available</li>

@@ -20,7 +20,7 @@ const GroupSensors: React.FC = () => {
     }, [groupId]);
 
     return (
-        <div>
+        <div id="main-content" data-name="Sensors">
             <h1>Sensors for Group {groupId}</h1>
             <ul>
                 {Array.isArray(sensors) && sensors.length > 0 ? (

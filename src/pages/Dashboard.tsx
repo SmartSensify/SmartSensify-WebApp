@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getLoggedUserData } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 // Utils
 import { removeAuthToken } from '../utils/auth';
@@ -16,8 +16,11 @@ const Dashboard: React.FC = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState<any>(null);
     const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+    const [headerText, setHeaderText] = useState<string>('Default Header Text');
+    const location = useLocation();
 
     useEffect(() => {
+        console.log("Site update");
         const storedTheme = localStorage.getItem('theme');
 
         if (storedTheme === 'dark') {
@@ -31,7 +34,11 @@ const Dashboard: React.FC = () => {
             setUserData(response.data);
         };
         fetchUserData();
-    }, []);
+
+        const outletElement = document.getElementById('main-content');
+        const elementName = outletElement?.dataset.name;
+        setHeaderText(elementName || 'Default Header Text');
+    }, [location.pathname]);
 
     const handleLogout = () => {
         removeAuthToken();
@@ -85,7 +92,7 @@ const Dashboard: React.FC = () => {
                     </div>
                     <div>
                         <div className="nav flex-column">
-                            <Link to="/dashboard">
+                            <Link to="overview">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         dashboard
@@ -93,7 +100,7 @@ const Dashboard: React.FC = () => {
                                     Overview
                                 </div>
                             </Link>
-                            <Link to="/dashboard/groups"> {/* TODO: Make this link relative */}
+                            <Link to="groups"> {/* TODO: Make this and other links relative */}
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         sensors
@@ -101,38 +108,38 @@ const Dashboard: React.FC = () => {
                                     Sensors
                                 </div>
                             </Link>
-                            <a href="#">
+                            <Link to="alerts">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         notifications
                                     </span>
                                     Alerts
                                 </div>
-                            </a>
-                            <a href="#">
+                            </Link>
+                            <Link to="analysis">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         monitoring
                                     </span>
-                                    Analisis
+                                    Analysis
                                 </div>
-                            </a>
-                            <a href="#">
+                            </Link>
+                            <Link to="reports">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         problem
                                     </span>
                                     Reports
                                 </div>
-                            </a>
-                            <a href="#">
+                            </Link>
+                            <Link to="settings">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         settings
                                     </span>
                                     Settings
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="mt-4">
@@ -154,8 +161,7 @@ const Dashboard: React.FC = () => {
                     {/* Header */}
                     <header className="d-flex justify-content-between align-items-center bg-body-secondary text-body-secondary p-2">
                         <div>
-                            Welcome back @
-
+                            <p id="header-text" className="lh-sm">{headerText}</p>
                         </div>
                         <div className='header-right d-flex align-items-center'>
                             <div className='header-notifications noselect'>
