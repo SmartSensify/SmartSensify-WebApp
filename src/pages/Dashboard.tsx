@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getLoggedUserData } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 // Utils
 import { removeAuthToken } from '../utils/auth';
@@ -11,13 +12,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/dashboardPage.css';
 
-
-
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState<any>(null);
+    const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
 
     useEffect(() => {
+        const storedTheme = localStorage.getItem('theme');
+
+        if (storedTheme === 'dark') {
+            applyDarkTheme();
+        } else {
+            removeDarkTheme();
+        }
+
         const fetchUserData = async () => {
             const response = await getLoggedUserData();
             setUserData(response.data);
@@ -30,37 +38,62 @@ const Dashboard: React.FC = () => {
         navigate('/');
     };
 
-    return (
-        <div className="container-fluid vh-100" id="page-dashboard">
-            {/* <h2>Dashboard</h2>
-            {userData && (
-                <div>
-                    <p>Username: {userData.username}</p>
-                    <p>Email: {userData.email}</p>
-                    <p>Last Login Date: {userData.lastLoginDate}</p>
-                </div>
-            )}
-            <button onClick={handleLogout}>Logout</button>
-            <Link to="/dashboard/groups">Groups</Link> */}
-            {/* TODO: Make this link relative */}
+    const applyDarkTheme = () => {
+        const pageElement = document.getElementById('page-dashboard');
+        const switchElement = document.getElementById('flexSwitchCheckDefault') as HTMLInputElement;
 
-            {/* Left Menu Pane */}
+        if (pageElement && switchElement) {
+            switchElement.checked = true;
+            pageElement.setAttribute('data-bs-theme', 'dark');
+            setIsDarkTheme(true);
+        }
+    };
+
+    const removeDarkTheme = () => {
+        const pageElement = document.getElementById('page-dashboard');
+
+        if (pageElement) {
+            pageElement.removeAttribute('data-bs-theme');
+            setIsDarkTheme(false);
+        }
+    };
+
+    const changeTheme = () => {
+        const pageElement = document.getElementById('page-dashboard');
+
+        if (pageElement) {
+            const hasThemeAttribute = pageElement.hasAttribute('data-bs-theme');
+            if (!hasThemeAttribute) {
+                pageElement.setAttribute('data-bs-theme', 'dark');
+                setIsDarkTheme(true);
+                localStorage.setItem('theme', 'dark');
+            } else {
+                pageElement.removeAttribute('data-bs-theme');
+                setIsDarkTheme(false);
+                localStorage.removeItem('theme');
+            }
+        }
+    };
+
+    return (
+        <div className="container-fluid vh-100" id="page-dashboard" data-bs-theme="dark">
             <div className="row h-100 overflow-hidden">
-                <nav className="col-md-3 col-lg-2 d-md-block sidebar text-white p-3">
+                {/* Left Menu Pane */}
+                <nav className="col-md-3 col-lg-2 d-md-block sidebar p-3">
                     <div className="text-center mb-4">
                         <img id="image-logo" className="img-fluid mb-3 noselect" src="/images/smartsensify_logo_white.png" alt="Logo" />
                     </div>
                     <div>
                         <div className="nav flex-column">
-                            <a href="#">
+                            <Link to="/dashboard">
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         dashboard
                                     </span>
                                     Overview
                                 </div>
-                            </a>
-                            <Link to="/dashboard/groups">
+                            </Link>
+                            <Link to="/dashboard/groups"> {/* TODO: Make this link relative */}
                                 <div className="nav-button noselect">
                                     <span className="nav-icon-center material-symbols-outlined">
                                         sensors
@@ -117,9 +150,9 @@ const Dashboard: React.FC = () => {
                 </nav>
 
                 {/* Right Pane */}
-                <div className="col-md-9 col-lg-10 px-0">
+                <div className="col-md-9 col-lg-10 px-0 ">
                     {/* Header */}
-                    <header className="d-flex justify-content-between align-items-center bg-white p-2">
+                    <header className="d-flex justify-content-between align-items-center bg-body-secondary text-body-secondary p-2">
                         <div>
                             Welcome back @
 
@@ -152,7 +185,7 @@ const Dashboard: React.FC = () => {
                                     </li>
                                     <li className="mb-2">
                                         <div className="form-check form-switch">
-                                            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                                            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={changeTheme} />
                                             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Dark Mode</label>
                                         </div>
                                     </li>
@@ -175,10 +208,8 @@ const Dashboard: React.FC = () => {
                     </header>
 
                     {/* Main Content */}
-                    <main className="p-3 scrollable-container">
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                        <br />hello<br />hello<br />hello<br />hello<br />hello<br /><br /><br /><br /><br /><br /><br />
+                    <main className="p-3 scrollable-container bg-body text-body">
+                        <Outlet />
                     </main>
                 </div>
             </div>

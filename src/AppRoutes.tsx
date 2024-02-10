@@ -15,9 +15,10 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<RouteGuard element={<Dashboard />} />} />
-      <Route path="/dashboard/groups" element={<RouteGuard element={<Groups />} />} />
-      <Route path="/dashboard/groups/:groupId" element={<RouteGuard element={<Sensors />} />} />
+      <Route path="/dashboard" element={<RouteGuard element={<Dashboard />} />}>
+        <Route path="groups" element={<Groups />} />
+        <Route path="groups/:groupId" element={<Sensors />} />
+      </Route>
       <Route path="/sensors" element={<SensorData />} />
     </Routes>
   );
