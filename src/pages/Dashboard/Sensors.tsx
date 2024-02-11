@@ -68,7 +68,6 @@ const Sensors: React.FC = () => {
             </div>
             <div className="row">
                 <div className="col bg-body-secondary rounded m-4 p-4 container">
-                    <h4>Data types</h4>
                     <SensorDataType sensor={sensor!} />
                 </div>
             </div>

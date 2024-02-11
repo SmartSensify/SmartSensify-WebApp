@@ -8,6 +8,7 @@ import {
 } from './auth';
 import Sensor from '../interfaces/Sensor';
 import Group from '../interfaces/Group';
+import {SensorData} from '../interfaces/SensorData';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -98,6 +99,22 @@ export const getCertainSensor = async (sensorId: String): Promise<Sensor> => {
             },
         });
         return response.data.sensor;
+    } catch (error) {
+        console.error('Error fetching sensor data:', error);
+        throw error;
+    }
+}
+
+export const getSensorData = async (sensorId: String): Promise<SensorData[]> => {
+    if (!isAuthenticated()) throw new Error('User not authenticated');
+
+    try {
+        const response = await axios.get<{ sensorData: SensorData[] }>(`${BASE_URL}/sensors/${sensorId}/data`, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+        return response.data as unknown as SensorData[];
     } catch (error) {
         console.error('Error fetching sensor data:', error);
         throw error;
