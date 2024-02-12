@@ -2,29 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Sensor from '../../interfaces/Sensor';
 import { getSensorData } from '../../utils/api';
 import { SensorData, Reading } from '../../interfaces/SensorData';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js'
-import { Line, Chart } from 'react-chartjs-2'
-import SensorChart from './charts/SensorChart';
 import GenerateSensorDataCharts from './charts/GenerateSensorDataCharts';
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-)
 
 const SensorDataItem: React.FC<{ sensor: Sensor; }> = ({ sensor }) => {
     const [mainSensorData, setMainSensorata] = useState<SensorData[]>([]);

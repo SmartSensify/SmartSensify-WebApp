@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getCertainSensor, getPrivateSensors } from '../../utils/api';
+import { getCertainSensor, getPrivateSensors, getSensorData } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 // Interfaces
 import Sensor from '../../interfaces/Sensor';
 import SensorDataType from '../../components/dashboard/SensorDataType';
+import GenerateBatteryChart from '../../components/dashboard/charts/GenerateBatteryChart';
+import { SensorData } from '../../interfaces/SensorData';
 
 const Sensors: React.FC = () => {
     const { sensorId } = useParams<{ sensorId: string }>();
-    const [sensor, setSensor] = useState<Sensor>();
+    const [sensor, setSensor] = useState<Sensor | undefined>();
+    const [sensorData, setSensorData] = useState<SensorData[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setSensor(await getCertainSensor(sensorId || ''));
+                const fetchedSensor = await getCertainSensor(sensorId || '');
+                setSensor(fetchedSensor);
+                
             } catch (error) {
                 console.error('Error fetching sensors:', error);
             }
@@ -23,6 +28,21 @@ const Sensors: React.FC = () => {
 
         fetchData();
     }, [sensorId]);
+
+    useEffect(() => {
+        const fetchSensorData = async () => {
+            try {
+                if (sensor) {
+                    const data = await getSensorData(sensor._id);
+                    setSensorData(data);
+                }
+            } catch (error) {
+                console.error('Error fetching sensor data:', error);
+            }
+        };
+
+        fetchSensorData();
+    }, [sensor]);
 
     const handleSensorClick = async (sensorId: string) => {
         navigate(`/dashboard/sensors/${sensorId}`);
@@ -35,10 +55,18 @@ const Sensors: React.FC = () => {
                     <h5>Sensor: {sensor?.name}</h5>
                     <h5>Sensor Id: {sensor?._id}</h5>
                     <h5>Sensor secret key: {sensor?.secretKey}</h5>
+                    <h6 className={sensor?.isActive ? 'text-success' : 'text-danger'}>
+                        {sensor?.isActive ? "Active" : "Inactive"}
+                    </h6>
+                    <h6>
+                        {sensor?.isPublic ? "Public" : "Private"}
+                    </h6>
                 </div>
                 <div className="col bg-body-secondary rounded m-4 p-4">
-                    <h5>Is Active: False</h5>
-                    <h5>Is Public: {sensor?.isPublic ? "True" : "False"}</h5>
+                    <h4>Battery</h4>
+                    <div>
+                        <GenerateBatteryChart providedSensorData={sensorData} />
+                    </div>
                 </div>
             </div>
             <div className="row">
@@ -55,10 +83,6 @@ const Sensors: React.FC = () => {
                 </div>
                 <div className="col bg-body-secondary rounded m-4 p-4 container">
                     <div className="row">
-                        <div className='w-50'>
-                            <h4>Battery</h4>
-                            <div>Battery chart</div>
-                        </div>
                         <div className='w-50'>
                             <h4>Current localization</h4>
                             <div>Lozalization map</div>

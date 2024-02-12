@@ -45,10 +45,6 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
 
                 setSensorTimestamps(slicedData.map(data => data?.timestamp));
 
-                setSensorReadings1(slicedData.map(data => data?.readings[0]?.value));
-                setSensorReadings2(slicedData.map(data => data?.readings[1]?.value));
-                setSensorReadings3(slicedData.map(data => data?.readings[2]?.value));
-
                 const maxReadings = Math.max(...slicedData.map(data => data.readings.length));
                 setSensorReadings(
                     Array.from({ length: maxReadings }, (_, index) =>

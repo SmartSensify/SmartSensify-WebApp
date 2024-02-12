@@ -49,7 +49,12 @@ const GroupSensors: React.FC = () => {
                             <SensorItem key={index} sensor={sensor} handleSensorClick={handleSensorClick} />
                         ))
                     ) : (
-                        <li>No groups data available</li>
+                        <div>
+                            <p>Loading sensors...</p>
+                            <div className="spinner-border" style={{ width: '10rem', height: '10rem' }} role="status">
+                                <span className="sr-only"></span>
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>

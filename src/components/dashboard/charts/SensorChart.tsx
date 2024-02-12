@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Sensor from '../../../interfaces/Sensor';
 import { getSensorData } from '../../../utils/api';
 import { SensorData, Reading } from '../../../interfaces/SensorData';
+import 'chartjs-adapter-moment';
 import moment from 'moment';
 import {
     Chart as ChartJS,
@@ -38,7 +39,7 @@ interface SensorChartProps {
 
 const SensorChart: React.FC<SensorChartProps> = ({ readings, timestamps, label }) => {
 
-    const formattedTimestamps = timestamps.map(timestamp => moment(timestamp).format('MMM D, YYYY HH'));
+    const formattedTimestamps = timestamps.map(timestamp => moment(timestamp).format('YY MMM D HH:m'));
 
     const data: ChartData<'line'> = {
         labels: formattedTimestamps,
@@ -48,7 +49,7 @@ const SensorChart: React.FC<SensorChartProps> = ({ readings, timestamps, label }
                 data: readings.map(value => parseFloat(value)),
                 fill: false,
                 borderColor: '#238c51',
-                tension: 0.1,
+                tension: .3,
             },
         ],
     };
@@ -56,11 +57,11 @@ const SensorChart: React.FC<SensorChartProps> = ({ readings, timestamps, label }
     const options: ChartOptions<'line'> = {
         scales: {
             x: {
-                type: 'time',
+                // type: 'time',
                 time: {
-                    unit: 'hour',
+                    unit: 'hour', // or 'month', depending on your data range
                     displayFormats: {
-                        hour: 'MMM D, YYYY HH',
+                        day: 'MMM D, YYYY',
                     },
                 },
                 title: {
@@ -77,7 +78,7 @@ const SensorChart: React.FC<SensorChartProps> = ({ readings, timestamps, label }
         },
     };
 
-    return <Line data={data}  />;
+    return <Line data={data} options={options} />;
 };
 
 export default SensorChart;
