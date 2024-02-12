@@ -107,7 +107,6 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
                                     <h3>{`${readings[0].type} chart`}</h3>
                                     <SensorChart readings={readings.map(reading => reading.value)} timestamps={sensorTimestamps} label={readings[0].type} />
                                 </div>
-
                             </div>
                         )
                     ))}

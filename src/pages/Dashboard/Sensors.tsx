@@ -9,6 +9,9 @@ import SensorDataType from '../../components/dashboard/SensorDataType';
 import GenerateBatteryChart from '../../components/dashboard/charts/GenerateBatteryChart';
 import { SensorData } from '../../interfaces/SensorData';
 
+// Components
+import SensorLocalizationMap from '../../components/dashboard/maps/SensorLocalizationMap';
+
 const Sensors: React.FC = () => {
     const { sensorId } = useParams<{ sensorId: string }>();
     const [sensor, setSensor] = useState<Sensor | undefined>();
@@ -86,8 +89,8 @@ const Sensors: React.FC = () => {
                 <div className="col bg-body-secondary rounded m-4 p-4 container">
                     <div className="row">
                         <div className='w-50'>
-                            <h4>Current localization</h4>
-                            <div>Lozalization map</div>
+                            <h6>Current localization</h6>
+                            <SensorLocalizationMap sensor={sensor!} />
                         </div>
                     </div>
                 </div>
