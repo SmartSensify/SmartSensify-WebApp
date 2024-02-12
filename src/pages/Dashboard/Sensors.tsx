@@ -61,9 +61,11 @@ const Sensors: React.FC = () => {
                     <h6>
                         {sensor?.isPublic ? "Public" : "Private"}
                     </h6>
+                    <h6>
+                        Number of active alerts: {sensor?.alerts.length}
+                    </h6>
                 </div>
                 <div className="col bg-body-secondary rounded m-4 p-4">
-                    <h4>Battery</h4>
                     <div>
                         <GenerateBatteryChart providedSensorData={sensorData} />
                     </div>

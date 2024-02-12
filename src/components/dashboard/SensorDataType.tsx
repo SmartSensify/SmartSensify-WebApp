@@ -34,15 +34,20 @@ const SensorDataItem: React.FC<{ sensor: Sensor; }> = ({ sensor }) => {
             <div>
                 <h3>Data charts</h3>
 
-                <h6>Date from:</h6>
-                <input id="datepicker-startDate" type="date" onChange={handleStartDateChange}></input>
+                <div className="row">
+                    <div className="col-md-6">
+                        <label htmlFor="datepicker-startDate" className="form-label">Date from:</label>
+                        <input id="datepicker-startDate" type="date" className="form-control" onChange={handleStartDateChange} />
+                    </div>
 
-                <h6>Date to:</h6>
-                <input id="datepicker-endDate" type="date" onChange={handleEndDateChange}></input>
+                    <div className="col-md-6">
+                        <label htmlFor="datepicker-endDate" className="form-label">Date to:</label>
+                        <input id="datepicker-endDate" type="date" className="form-control" onChange={handleEndDateChange} />
+                    </div>
+                </div>
 
                 {<GenerateSensorDataCharts providedSensorData={mainSensorData} />}
             </div>
-            <h3>Sensor Data Display</h3>
             {/* {sensorData.map((data) => (
                 <div key={data._id}>
                     <h2>Location: {data.location.x}, {data.location.y}</h2>

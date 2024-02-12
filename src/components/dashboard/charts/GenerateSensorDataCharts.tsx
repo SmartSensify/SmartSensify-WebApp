@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sensor from '../../../interfaces/Sensor';
 import { getSensorData } from '../../../utils/api';
+import moment from 'moment';
 import { SensorData, Reading } from '../../../interfaces/SensorData';
 import {
     Chart as ChartJS,
@@ -27,12 +28,9 @@ ChartJS.register(
 
 const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> = ({ providedSensorData }) => {
     const [sensorTimestamps, setSensorTimestamps] = useState<string[]>([]);
-    const [sensorReadingss, setSensorReadingss] = useState<Reading[][]>([]);
-    const [sensorReadings1, setSensorReadings1] = useState<string[]>([]);
-    const [sensorReadings2, setSensorReadings2] = useState<string[]>([]);
-    const [sensorReadings3, setSensorReadings3] = useState<string[]>([]);
-
     const [sensorReadings, setSensorReadings] = useState<Reading[][]>([]);
+    const [reverSedsensorTimestamps, setReversedSensorTimestamps] = useState<string[]>([]);
+    const [reverSedsensorReadings, setReversedSensorReadings] = useState<Reading[][]>([]);
 
     const [readingValue, setReadingValue] = useState<string>();
     const [loading, setLoading] = useState(true);
@@ -52,9 +50,12 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
                     )
                 );
 
+                setReversedSensorTimestamps(sensorTimestamps.reverse());
+                setReversedSensorReadings(sensorReadings.reverse());
+
                 // setSensorReadings(slicedData.map(data => data?.readings?.map(reading => reading.value)));
                 // setSensorReadings(slicedData.map(data => data?.readings.map(reading => reading.value)));
-                setSensorReadingss(slicedData.map(data => data?.readings))
+                //setSensorReadingss(slicedData.map(data => data?.readings))
 
                 setReadingValue(slicedData[0]?.readings[0]?.type);
                 setLoading(false);
@@ -78,19 +79,31 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
                     <SensorChart readings={sensorReadings3} timestamps={sensorTimestamps} /> */}
                     {sensorReadings.map((readings, index) => (
                         (readings[0].type !== 'voltage' && readings[0].type !== 'battery status') && (
-                            <div className="row">
-
+                            <div className="row mt-4" key={index}>
                                 <div className='col-3'>
-                                    {/* {readings.map((reading) => (
-                                        <li key={reading._id}>
-                                            <p>Type: {reading.type}</p>
-                                            <p>Unit: {reading.unit}</p>
-                                            <p>Value: {reading.value}</p>
-                                        </li>
-                                    ))} */}
+                                    <h4>Last readings:</h4>
+                                    <table className="table rounded-pill">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Timestamp</th>
+                                                <th scope="col">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                readings
+                                                    .slice(0, 8)
+                                                    .map((reading, innerIndex) => (
+                                                        <tr key={innerIndex} >
+                                                            <td>{moment(sensorTimestamps[sensorTimestamps.length - 1 - innerIndex]).format('YYYY-MM-DD HH:mm')}</td>
+                                                            <td>{sensorReadings[index][sensorTimestamps.length - 1 - innerIndex]?.value} {reading.unit}</td>
+                                                        </tr>
+                                                    ))}
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div key={index} className='col-9'>
+                                <div className='col-9'>
                                     <h3>{`${readings[0].type} chart`}</h3>
                                     <SensorChart readings={readings.map(reading => reading.value)} timestamps={sensorTimestamps} label={readings[0].type} />
                                 </div>
