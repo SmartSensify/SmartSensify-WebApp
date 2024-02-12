@@ -41,7 +41,7 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
         const fetchData = async () => {
             try {
                 const data = providedSensorData;
-                const slicedData = data.slice(-100); //.slice(-100)
+                const slicedData = data; //.slice(-100)
 
                 setSensorTimestamps(slicedData.map(data => data?.timestamp));
 
@@ -69,8 +69,6 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
 
     return (
         <div>
-            <h3>Data charts</h3>
-
             {loading ? (
                 <p>Loading...</p>
             ) : sensorReadings.length > 1 ? (
@@ -80,9 +78,23 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
                     <SensorChart readings={sensorReadings3} timestamps={sensorTimestamps} /> */}
                     {sensorReadings.map((readings, index) => (
                         (readings[0].type !== 'voltage' && readings[0].type !== 'battery status') && (
-                            <div key={index}>
-                                <h3>{`${readings[0].type} chart`}</h3>
-                                <SensorChart readings={readings.map(reading => reading.value)} timestamps={sensorTimestamps} label={readings[0].type} />
+                            <div className="row">
+
+                                <div className='col-3'>
+                                    {/* {readings.map((reading) => (
+                                        <li key={reading._id}>
+                                            <p>Type: {reading.type}</p>
+                                            <p>Unit: {reading.unit}</p>
+                                            <p>Value: {reading.value}</p>
+                                        </li>
+                                    ))} */}
+                                </div>
+
+                                <div key={index} className='col-9'>
+                                    <h3>{`${readings[0].type} chart`}</h3>
+                                    <SensorChart readings={readings.map(reading => reading.value)} timestamps={sensorTimestamps} label={readings[0].type} />
+                                </div>
+
                             </div>
                         )
                     ))}
@@ -96,23 +108,7 @@ const GenerateSensorDataCharts: React.FC<{ providedSensorData: SensorData[]; }> 
                 </div>
             )}
 
-            {/* {loading ? (
-                <p>Loading...</p>
-            ) : sensorReadings.length > 0 ? (
-                sensorReadings.map((readingsArray, index) => (
-                    <div key={index}>
-                      <h3>{`Chart ${index + 1}`}</h3>
-                      <SensorChart readings={readingsArray} timestamps={sensorTimestamps}  /> 
-                    </div>
-                  ))
-            ) : (
-                <div>
-                    <p>Loading graph...</p>
-                    <div className="spinner-border" style={{ width: '30rem', height: '30rem' }} role="status">
-                        <span className="sr-only"></span>
-                    </div>
-                </div>
-            )} */}
+
 
         </div>
     );

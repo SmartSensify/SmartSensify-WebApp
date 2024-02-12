@@ -8,7 +8,7 @@ import {
 } from './auth';
 import Sensor from '../interfaces/Sensor';
 import Group from '../interfaces/Group';
-import {SensorData} from '../interfaces/SensorData';
+import { SensorData } from '../interfaces/SensorData';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -57,7 +57,7 @@ export const getPrivateGroups = async (): Promise<Group[]> => {
             console.error('User not authenticated');
             throw new Error('User not authenticated');
         }
-        
+
         const response = await axios.get<{ groups: Group[] }>(`${BASE_URL}/groups`, {
             headers: {
                 Authorization: `${getAuthToken()}`,
@@ -76,7 +76,7 @@ export const getPrivateSensors = async (groupId: String): Promise<Sensor[]> => {
             console.error('User not authenticated');
             throw new Error('User not authenticated');
         }
-        
+
         const response = await axios.get<{ sensors: Sensor[] }>(`${BASE_URL}/groups/${groupId}/sensors`, {
             headers: {
                 Authorization: `${getAuthToken()}`,
@@ -105,18 +105,46 @@ export const getCertainSensor = async (sensorId: String): Promise<Sensor> => {
     }
 }
 
-export const getSensorData = async (sensorId: String): Promise<SensorData[]> => {
+// export const getSensorData = async (sensorId: String): Promise<SensorData[]> => {
+//     if (!isAuthenticated()) throw new Error('User not authenticated');
+
+//     try {
+//         const response = await axios.get<{ sensorData: SensorData[] }>(`${BASE_URL}/sensors/${sensorId}/data`, {
+//             headers: {
+//                 Authorization: `${getAuthToken()}`,
+//             },
+//         });
+//         return response.data as unknown as SensorData[];
+//     } catch (error) {
+//         console.error('Error fetching sensor data:', error);
+//         throw error;
+//     }
+// }
+
+export const getSensorData = async (
+    sensorId: string,
+    startDate?: string | null,
+    endDate?: string | null
+): Promise<SensorData[]> => {
     if (!isAuthenticated()) throw new Error('User not authenticated');
 
     try {
-        const response = await axios.get<{ sensorData: SensorData[] }>(`${BASE_URL}/sensors/${sensorId}/data`, {
-            headers: {
-                Authorization: `${getAuthToken()}`,
-            },
-        });
+        const params = new URLSearchParams();
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+
+        const response = await axios.get<{ sensorData: SensorData[] }>(
+            `${BASE_URL}/sensors/${sensorId}/data?${params.toString()}`,
+            {
+                headers: {
+                    Authorization: `${getAuthToken()}`,
+                },
+            }
+        );
+
         return response.data as unknown as SensorData[];
     } catch (error) {
         console.error('Error fetching sensor data:', error);
         throw error;
     }
-}
+};

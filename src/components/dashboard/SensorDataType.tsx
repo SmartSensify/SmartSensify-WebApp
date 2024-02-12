@@ -5,23 +5,41 @@ import { SensorData, Reading } from '../../interfaces/SensorData';
 import GenerateSensorDataCharts from './charts/GenerateSensorDataCharts';
 
 const SensorDataItem: React.FC<{ sensor: Sensor; }> = ({ sensor }) => {
-    const [mainSensorData, setMainSensorata] = useState<SensorData[]>([]);
+    const [mainSensorData, setMainSensorData] = useState<SensorData[]>([]);
+    const [startDate, setStartDate] = useState<string | null>(null);
+    const [endDate, setEndDate] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setMainSensorata(await getSensorData(sensor._id));
+                setMainSensorData(await getSensorData(sensor._id, startDate, endDate));
             } catch (error) {
                 console.error('Error fetching sensor data:', error);
             }
         };
 
         fetchData();
-    }, [sensor]);
+    }, [sensor, startDate, endDate]);
+
+    const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStartDate(event.target.value);
+    };
+
+    const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEndDate(event.target.value);
+    };
 
     return (
         <div>
             <div>
+                <h3>Data charts</h3>
+
+                <h6>Date from:</h6>
+                <input id="datepicker-startDate" type="date" onChange={handleStartDateChange}></input>
+
+                <h6>Date to:</h6>
+                <input id="datepicker-endDate" type="date" onChange={handleEndDateChange}></input>
+
                 {<GenerateSensorDataCharts providedSensorData={mainSensorData} />}
             </div>
             <h3>Sensor Data Display</h3>
