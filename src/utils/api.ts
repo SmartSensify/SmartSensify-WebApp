@@ -9,6 +9,7 @@ import {
 import Sensor from '../interfaces/Sensor';
 import Group from '../interfaces/Group';
 import { SensorData } from '../interfaces/SensorData';
+import { showAlert } from './user_interaction/alertController';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -51,6 +52,8 @@ export const getPublicSensors = async (): Promise<Sensor[]> => {
     }
 };
 
+/* Groups */
+
 export const getPrivateGroups = async (): Promise<Group[]> => {
     try {
         if (!isAuthenticated()) {
@@ -69,6 +72,120 @@ export const getPrivateGroups = async (): Promise<Group[]> => {
         throw error;
     }
 };
+
+export const getGroupById = async (groupId: string): Promise<Group> => {
+    try {
+        if (!isAuthenticated()) {
+            console.error('User not authenticated');
+            throw new Error('User not authenticated');
+        }
+
+        const response = await axios.get<{ group: Group }>(`${BASE_URL}/groups/${groupId}`, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+        return response.data.group;
+    } catch (error) {
+        console.error('Error fetching private groups data:', error);
+        throw error;
+    }
+};
+
+export const createNewGroup = async (group: Group, callback: () => void): Promise<Group | null> => {
+    try {
+        if (!isAuthenticated()) throw new Error('User not authenticated');
+
+        const response = await axios.post<Group>(`${BASE_URL}/groups`, {
+            name: group.name,
+            description: group.description
+        }, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+
+        showAlert({
+            Header: 'Succes',
+            Message: `${group.name} added.`,
+            Type: 'success',
+        });
+
+        callback();
+
+        return response.data;
+    } catch (error) {
+        showAlert({
+            Header: 'Error',
+            Message: `Server can't process request.`,
+            Type: 'danger',
+        });
+        return null as any;
+    }
+}
+
+export const deleteGroup = async (groupId: string, callback: () => void): Promise<Group | null> => {
+    try {
+        if (!isAuthenticated()) throw new Error('User not authenticated');
+
+        const response = await axios.delete<Group>(`${BASE_URL}/groups/${groupId}`, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+
+        showAlert({
+            Header: 'Succes',
+            Message: `Group ${groupId} deleted.`,
+            Type: 'success',
+        });
+
+        callback();
+
+        return response.data;
+    } catch (error) {
+        showAlert({
+            Header: 'Error',
+            Message: `Server can't process request.`,
+            Type: 'danger',
+        });
+        return null as any;
+    }
+}
+
+export const editExistingGroup = async (group: Group, callback: () => void): Promise<Group | null> => {
+    try {
+        if (!isAuthenticated()) throw new Error('User not authenticated');
+
+        const response = await axios.patch<Group>(`${BASE_URL}/groups/${group._id}`, {
+            name: group.name,
+            description: group.description
+        }, {
+            headers: {
+                Authorization: `${getAuthToken()}`,
+            },
+        });
+
+        showAlert({
+            Header: 'Succes',
+            Message: `Group ${group.name} edited.`,
+            Type: 'success',
+        });
+
+        callback();
+
+        return response.data;
+    } catch (error) {
+        showAlert({
+            Header: 'Error',
+            Message: `Server can't process request.`,
+            Type: 'danger',
+        });
+        return null as any;
+    }
+}
+
+/* Sensors */
 
 export const getPrivateSensors = async (groupId: String): Promise<Sensor[]> => {
     try {

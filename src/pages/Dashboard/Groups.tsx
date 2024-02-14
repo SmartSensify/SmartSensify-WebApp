@@ -7,26 +7,34 @@ import { useNavigate } from 'react-router-dom';
 
 // Components
 import GroupItem from '../../components/dashboard/GroupItem';
+import NewGroupButton from '../../utils/user_interaction/custom_modals/NewGroupButton';
 
 const Groups: React.FC = () => {
-    const [groupData, setgroupData] = useState<Group[]>([]);
+    const [groupData, setGroupData] = useState<Group[]>([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setgroupData(await getPrivateGroups());
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+    const fetchData = async () => {
+        try {
+            setGroupData(await getPrivateGroups());
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, []);
 
     const handleGroupClick = async (groupId: string) => {
         navigate(`/dashboard/groups/${groupId}`);
     };
+
+    // const createNewGroup = (args: any) => {
+    //     // Perform actions with the form values, for example:
+    //     console.log('Name:', args.name);
+    //     console.log('Description:', args.description);
+    //     // Implement your logic here, e.g., make an API call, update state, etc.
+    // };
 
     return (
         <div id="main-content" data-name="Groups">
@@ -41,6 +49,11 @@ const Groups: React.FC = () => {
                 )}
             </ul> */}
             <div className="container">
+                <div className='w-100'>
+
+                    <NewGroupButton fetchDataCallback={fetchData} />
+
+                </div>
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {Array.isArray(groupData) && groupData.length > 0 ? (
                         groupData.map((group, index) => (

@@ -158,6 +158,7 @@ const Dashboard: React.FC = () => {
 
                 {/* Right Pane */}
                 <div className="col-md-9 col-lg-10 px-0 ">
+                    <div id='main-modal'></div>
                     {/* Header */}
                     <header className="d-flex justify-content-between align-items-center bg-body-secondary text-body-secondary p-2">
                         <div>
@@ -215,6 +216,7 @@ const Dashboard: React.FC = () => {
 
                     {/* Main Content */}
                     <main className="p-3 pt-5 scrollable-container bg-body text-body">
+                        <div id='alert-holder'></div>
                         <Outlet />
                     </main>
                 </div>
