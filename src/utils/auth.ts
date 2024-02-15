@@ -1,3 +1,4 @@
+
 export const setAuthToken = (token: string, username: string): void => {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username);
@@ -19,3 +20,12 @@ export const getLoggedUsername = (): string | null => {
 export const isAuthenticated = (): boolean => {
     return !!getAuthToken();
 };
+
+export const checkAuthentication = () => {
+    if (!isAuthenticated()) {
+        removeAuthToken();
+        
+        return false;
+    }
+    return true
+}

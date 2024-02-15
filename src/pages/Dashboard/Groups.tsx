@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sensor from '../../interfaces/Sensor';
 import { getPrivateGroups } from '../../utils/api';
+import { getPrivateGroupsCached } from '../../utils/server/cache';
 import Group from '../../interfaces/Group';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,13 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import GroupItem from '../../components/dashboard/GroupItem';
 import NewGroupButton from '../../utils/user_interaction/custom_modals/NewGroupButton';
 
-const Groups: React.FC = () => {
-    const [groupData, setGroupData] = useState<Group[]>([]);
-    const navigate = useNavigate();
 
+const Groups: React.FC = () => {
+    const navigate = useNavigate();
+    const [groupData, setGroupData] = useState<Group[] | undefined>([]);
     const fetchData = async () => {
         try {
-            setGroupData(await getPrivateGroups());
+            setGroupData(await getPrivateGroupsCached());
         } catch (error) {
             console.error('Error fetching data:', error);
         }

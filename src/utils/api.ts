@@ -1,10 +1,11 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
     setAuthToken,
     getAuthToken,
     getLoggedUsername,
     removeAuthToken,
     isAuthenticated,
+    checkAuthentication,
 } from './auth';
 import Sensor from '../interfaces/Sensor';
 import Group from '../interfaces/Group';
@@ -52,15 +53,11 @@ export const getPublicSensors = async (): Promise<Sensor[]> => {
     }
 };
 
-/* Groups */
+/* Groups GET*/
 
-export const getPrivateGroups = async (): Promise<Group[]> => {
+export const getPrivateGroups = async (): Promise<Group[] | undefined> => {
+    if (!checkAuthentication()) return undefined;
     try {
-        if (!isAuthenticated()) {
-            console.error('User not authenticated');
-            throw new Error('User not authenticated');
-        }
-
         const response = await axios.get<{ groups: Group[] }>(`${BASE_URL}/groups`, {
             headers: {
                 Authorization: `${getAuthToken()}`,
@@ -73,13 +70,9 @@ export const getPrivateGroups = async (): Promise<Group[]> => {
     }
 };
 
-export const getGroupById = async (groupId: string): Promise<Group> => {
+export const getGroupById = async (groupId: string): Promise<Group | undefined> => {
+    if (!checkAuthentication()) return undefined;
     try {
-        if (!isAuthenticated()) {
-            console.error('User not authenticated');
-            throw new Error('User not authenticated');
-        }
-
         const response = await axios.get<{ group: Group }>(`${BASE_URL}/groups/${groupId}`, {
             headers: {
                 Authorization: `${getAuthToken()}`,
@@ -92,24 +85,126 @@ export const getGroupById = async (groupId: string): Promise<Group> => {
     }
 };
 
-export const createNewGroup = async (group: Group, callback: () => void): Promise<Group | null> => {
-    try {
-        if (!isAuthenticated()) throw new Error('User not authenticated');
+/* Groups POST, PATCH, DELETE */ 
 
-        const response = await axios.post<Group>(`${BASE_URL}/groups`, {
-            name: group.name,
-            description: group.description
-        }, {
+// Deprecated code
+
+// export const createNewGroup = async (group: Group, callback: () => void): Promise<Group | undefined> => {
+//     if (!checkAuthentication()) return undefined;
+//     try {
+//        const response = await axios.post<Group>(`${BASE_URL}/groups`, {
+//             name: group.name,
+//             description: group.description
+//         }, {
+//             headers: {
+//                 Authorization: `${getAuthToken()}`,
+//             },
+//         });
+
+//         showAlert({
+//             Header: 'Succes',
+//             Message: `${group.name} added.`,
+//             Type: 'success',
+//         });
+
+//         callback();
+
+//         return response.data;
+//     } catch (error) {
+//         showAlert({
+//             Header: 'Error',
+//             Message: `Server can't process request.`,
+//             Type: 'danger',
+//         });
+//         return null as any;
+//     }
+// }
+
+// export const deleteGroup = async (groupId: string, callback: () => void): Promise<Group | undefined> => {
+//     if (!checkAuthentication()) return undefined;
+//     try {
+//         const response = await axios.delete<Group>(`${BASE_URL}/groups/${groupId}`, {
+//             headers: {
+//                 Authorization: `${getAuthToken()}`,
+//             },
+//         });
+
+//         showAlert({
+//             Header: 'Succes',
+//             Message: `Group ${groupId} deleted.`,
+//             Type: 'success',
+//         });
+
+//         callback();
+
+//         return response.data;
+//     } catch (error) {
+//         showAlert({
+//             Header: 'Error',
+//             Message: `Server can't process request.`,
+//             Type: 'danger',
+//         });
+//         return null as any;
+//     }
+// }
+
+// export const editExistingGroup = async (group: Group, callback: () => void): Promise<Group | undefined> => {
+//     if (!checkAuthentication()) return undefined;
+//     try {
+//         const response = await axios.patch<Group>(`${BASE_URL}/groups/${group._id}`, {
+//             name: group.name,
+//             description: group.description
+//         }, {
+//             headers: {
+//                 Authorization: `${getAuthToken()}`,
+//             },
+//         });
+
+//         showAlert({
+//             Header: 'Succes',
+//             Message: `Group ${group.name} edited.`,
+//             Type: 'success',
+//         });
+
+//         callback();
+
+//         return response.data;
+//     } catch (error) {
+//         showAlert({
+//             Header: 'Error',
+//             Message: `Server can't process request.`,
+//             Type: 'danger',
+//         });
+//         return null as any;
+//     }
+// }
+
+// Refactorized code
+
+const apiRequest = async <T>(
+    method: string,
+    url: string,
+    data: object,
+    callback: () => void
+): Promise<T | undefined> => {
+    if (!checkAuthentication()) return undefined;
+    try {
+        const config: AxiosRequestConfig = {
+            method,
+            url,
+            data,
             headers: {
                 Authorization: `${getAuthToken()}`,
             },
-        });
+        };
+
+        const response = await axios(config);
 
         showAlert({
-            Header: 'Succes',
-            Message: `${group.name} added.`,
+            Header: 'Success',
+            Message: `${(data as Group).name || ''} ${getSuccessMessage(method)}`,
             Type: 'success',
-        });
+          });
 
         callback();
 
@@ -122,68 +217,32 @@ export const createNewGroup = async (group: Group, callback: () => void): Promis
         });
         return null as any;
     }
-}
+};
 
-export const deleteGroup = async (groupId: string, callback: () => void): Promise<Group | null> => {
-    try {
-        if (!isAuthenticated()) throw new Error('User not authenticated');
-
-        const response = await axios.delete<Group>(`${BASE_URL}/groups/${groupId}`, {
-            headers: {
-                Authorization: `${getAuthToken()}`,
-            },
-        });
-
-        showAlert({
-            Header: 'Succes',
-            Message: `Group ${groupId} deleted.`,
-            Type: 'success',
-        });
-
-        callback();
-
-        return response.data;
-    } catch (error) {
-        showAlert({
-            Header: 'Error',
-            Message: `Server can't process request.`,
-            Type: 'danger',
-        });
-        return null as any;
+const getSuccessMessage = (method: string): string => {
+    switch (method) {
+        case 'post':
+            return 'added.';
+        case 'delete':
+            return 'deleted.';
+        case 'patch':
+            return 'edited.';
+        default:
+            return '';
     }
-}
+};
 
-export const editExistingGroup = async (group: Group, callback: () => void): Promise<Group | null> => {
-    try {
-        if (!isAuthenticated()) throw new Error('User not authenticated');
+export const createNewGroup = async (group: Group, callback: () => void): Promise<Group | undefined> => {
+    return apiRequest<Group>('post', `${BASE_URL}/groups`, { name: group.name, description: group.description }, callback);
+};
 
-        const response = await axios.patch<Group>(`${BASE_URL}/groups/${group._id}`, {
-            name: group.name,
-            description: group.description
-        }, {
-            headers: {
-                Authorization: `${getAuthToken()}`,
-            },
-        });
+export const deleteGroup = async (groupId: string, callback: () => void): Promise<Group | undefined> => {
+    return apiRequest<Group>('delete', `${BASE_URL}/groups/${groupId}`, {}, callback);
+};
 
-        showAlert({
-            Header: 'Succes',
-            Message: `Group ${group.name} edited.`,
-            Type: 'success',
-        });
-
-        callback();
-
-        return response.data;
-    } catch (error) {
-        showAlert({
-            Header: 'Error',
-            Message: `Server can't process request.`,
-            Type: 'danger',
-        });
-        return null as any;
-    }
-}
+export const editExistingGroup = async (group: Group, callback: () => void): Promise<Group | undefined> => {
+    return apiRequest<Group>('patch', `${BASE_URL}/groups/${group._id}`, { name: group.name, description: group.description }, callback);
+};
 
 /* Sensors */
 
