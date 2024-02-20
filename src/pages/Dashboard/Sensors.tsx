@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getCertainSensor, getPrivateSensors, getSensorData } from '../../utils/api';
+import { getSensorById, getSensorData } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 // Interfaces
@@ -21,7 +21,7 @@ const Sensors: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchedSensor = await getCertainSensor(sensorId || '');
+                const fetchedSensor = await getSensorById(sensorId || '');
                 setSensor(fetchedSensor);
                 
             } catch (error) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sensor from '../../interfaces/Sensor';
-import { deleteGroup, getGroupById, getPrivateSensors } from '../../utils/api';
+import { deleteGroup, getGroupById, getAllSensorsByGroup } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 // Components
@@ -11,13 +11,13 @@ import Group from '../../interfaces/Group';
 
 const GroupSensors: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
-    const [sensors, setSensors] = useState<Sensor[]>([]);
+    const [sensors, setSensors] = useState<Sensor[] | undefined>([]);
     const [group, setGroup] = useState<Group>();
     const navigate = useNavigate();
 
     const fetchData = async () => {
         try {
-            setSensors(await getPrivateSensors(groupId || ''));
+            setSensors(await getAllSensorsByGroup(groupId || '',));
         } catch (error) {
             console.error('Error fetching sensors:', error);
         }
