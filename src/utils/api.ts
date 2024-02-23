@@ -158,7 +158,20 @@ export const editExistingGroup = async (group: Group, callback: () => void): Pro
 
 /* Sensors POST, PATCH, DELETE */
 
+export const createNewSensor = async (sensor: Sensor, groupId: string , callback: () => void): Promise<Sensor | undefined> => {
+    const response = apiRequest<Sensor>('post', `${BASE_URL}/sensors`, { name: sensor.name, isPublic: sensor.isPublic, groupId: groupId }, callback);
+    return response;
+}
 
+export const editSensor = async (sensor: Sensor, callback: () => void): Promise<Sensor | undefined> => {
+    const response = apiRequest<Sensor>('patch', `${BASE_URL}/sensors/${sensor._id}`, { name: sensor.name, isPublic: sensor.isPublic }, callback);
+    return response;
+}
+
+export const deleteSensor = async (sensor: Sensor , callback: () => void): Promise<Sensor | undefined> => {
+    const response = apiRequest<Sensor>('post', `${BASE_URL}/sensors${sensor._id}`, { }, callback);
+    return response;
+}
 
 /* Sensor data functions */
 

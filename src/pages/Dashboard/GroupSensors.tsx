@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import SensorItem from '../../components/dashboard/SensorItem';
 import EditGroup from '../../utils/user_interaction/custom_modals/EditGroup';
 import Group from '../../interfaces/Group';
+import NewSensorButton from '../../utils/user_interaction/custom_modals/AddSensor';
 
 const GroupSensors: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
@@ -58,6 +59,9 @@ const GroupSensors: React.FC = () => {
                         </div>
                         <div className='col-auto'>
                             {group ? <EditGroup group={group} fetchDataCallback={fetchData} /> : ''}
+                        </div>
+                        <div className='col-auto'>
+                            {group ? <NewSensorButton fetchDataCallback={fetchData} groupId={groupId ?? ''}  /> : ''}
                         </div>
                     </div>
                 </div>

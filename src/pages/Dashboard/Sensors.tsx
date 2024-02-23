@@ -11,23 +11,25 @@ import { SensorData } from '../../interfaces/SensorData';
 
 // Components
 import SensorLocalizationMap from '../../components/dashboard/maps/SensorLocalizationMap';
+import EditSensor from '../../utils/user_interaction/custom_modals/EditSensor';
 
 const Sensors: React.FC = () => {
     const { sensorId } = useParams<{ sensorId: string }>();
     const [sensor, setSensor] = useState<Sensor | undefined>();
     const [sensorData, setSensorData] = useState<SensorData[]>([]);
     const navigate = useNavigate();
+    const fetchData = async () => {
+        try {
+            const fetchedSensor = await getSensorById(sensorId || '');
+            setSensor(fetchedSensor);
+            
+        } catch (error) {
+            console.error('Error fetching sensors:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const fetchedSensor = await getSensorById(sensorId || '');
-                setSensor(fetchedSensor);
-                
-            } catch (error) {
-                console.error('Error fetching sensors:', error);
-            }
-        };
+        
 
         fetchData();
     }, [sensorId]);
@@ -67,6 +69,7 @@ const Sensors: React.FC = () => {
                     <h6>
                         Number of active alerts: {sensor?.alerts.length}
                     </h6>
+                    {sensor ? <EditSensor sensor={sensor} fetchDataCallback={fetchData}/> : ''}
                 </div>
                 <div className="col bg-body-secondary rounded m-4 p-4">
                     <div>
