@@ -45,7 +45,7 @@ interface ChildProps {
 
     return (
         <div>
-            <Button variant="primary" onClick={handleButtonClick}>
+            <Button variant="secondary" onClick={handleButtonClick}>
                 Edit this group
             </Button>
             <Modal show={showModal} data-bs-theme={isDarkTheme ? 'dark' : 'white'} className='text-body'>

@@ -24,6 +24,11 @@ const Groups: React.FC = () => {
         fetchData();
     }, []);
 
+    const handleRefreshClick = async () => {
+        setGroupData(undefined);
+        fetchData();
+    };
+
     const handleGroupClick = async (groupId: string) => {
         navigate(`/dashboard/groups/${groupId}`);
     };
@@ -48,10 +53,15 @@ const Groups: React.FC = () => {
                 )}
             </ul> */}
             <div className="container">
-                <div className='w-100'>
-
-                    <NewGroupButton fetchDataCallback={() => fetchData(false)} />
-
+                <div id='main-menu' className='w-100'>
+                    <div className='row'>
+                        <div className='col-auto'>
+                            <input type='button' className='btn btn-secondary' value='refresh'  onClick={() => handleRefreshClick()}/>
+                        </div>
+                        <div className='col-auto'>
+                            <NewGroupButton fetchDataCallback={() => fetchData(false)} />
+                        </div>
+                    </div>
                 </div>
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {Array.isArray(groupData) && groupData.length > 0 ? (
