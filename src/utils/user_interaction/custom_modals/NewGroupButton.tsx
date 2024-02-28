@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import Group from '../../../interfaces/Group';
@@ -7,9 +7,9 @@ import { createNewGroup } from '../../api';
 
 interface ChildProps {
     fetchDataCallback: () => void;
-  }
-  
-  const NewGroupButton: React.FC<ChildProps> = ({ fetchDataCallback }) => {
+}
+
+const NewGroupButton: React.FC<ChildProps> = ({ fetchDataCallback }) => {
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');

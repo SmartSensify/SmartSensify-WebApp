@@ -9,6 +9,7 @@ import SensorItem from '../../components/dashboard/SensorItem';
 import EditGroup from '../../utils/user_interaction/custom_modals/EditGroup';
 import Group from '../../interfaces/Group';
 import NewSensorButton from '../../utils/user_interaction/custom_modals/AddSensor';
+import AcceptModal from '../../utils/user_interaction/custom_modals/AcceptModal';
 
 const GroupSensors: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
@@ -50,22 +51,30 @@ const GroupSensors: React.FC = () => {
         <div id="main-content" data-name={`Sensors for ${groupId}`}>
             <div className="container">
                 <div id='main-menu' className='w-100'>
+                    {group ?
                     <div className='row'>
                         <div className='col-auto'>
                             <input type='button' className='btn btn-secondary' value='refresh' onClick={() => handleRefreshClick()} />
                         </div>
                         <div className='col-auto'>
-                            <input type='button' value="Delete this group" className='btn btn-danger' onClick={handleDeleteClick} />
+                            <AcceptModal
+                                callback={ handleDeleteClick }
+                                header={'Delete group'}
+                                message={`Do you want to delete ${group?.name} group?`} 
+                                buttonText={'Delete group'} 
+                                type={'danger'} />
+                            {/* <input type='button' value="Delete this group" className='btn btn-danger' onClick={handleDeleteClick} /> */}
                         </div>
                         <div className='col-auto'>
                             {group ? <EditGroup group={group} fetchDataCallback={fetchData} /> : ''}
                         </div>
                         <div className='col-auto'>
-                            {group ? <NewSensorButton fetchDataCallback={fetchData} groupId={groupId ?? ''}  /> : ''}
+                            {group ? <NewSensorButton fetchDataCallback={fetchData} groupId={groupId ?? ''} /> : ''}
                         </div>
                     </div>
+                    : ''}
                 </div>
-                
+
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {Array.isArray(sensors) && sensors.length > 0 ? (
                         sensors.map((sensor, index) => (

@@ -12,7 +12,9 @@ import NewGroupButton from '../../utils/user_interaction/custom_modals/NewGroupB
 const Groups: React.FC = () => {
     const navigate = useNavigate();
     const [groupData, setGroupData] = useState<Group[] | undefined>([]);
-    const fetchData = async (useCache: boolean = true) => {
+    const fetchData = async (useCache: boolean = true, event: any = null) => {
+        if (event) event.preventDefault();
+        alert(event);
         try {
             setGroupData(await getAllGroups(useCache));
         } catch (error) {
