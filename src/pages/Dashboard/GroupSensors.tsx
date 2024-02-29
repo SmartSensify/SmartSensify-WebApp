@@ -54,7 +54,7 @@ const GroupSensors: React.FC = () => {
                     {group ?
                     <div className='row'>
                         <div className='col-auto'>
-                            <input type='button' className='btn btn-secondary' value='refresh' onClick={() => handleRefreshClick()} />
+                            <input type='button' className='btn btn-secondary' value='Refresh' onClick={() => handleRefreshClick()} />
                         </div>
                         <div className='col-auto'>
                             <AcceptModal

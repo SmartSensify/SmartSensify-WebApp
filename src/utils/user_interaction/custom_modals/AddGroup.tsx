@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form, Col } from 'react-bootstrap';
 import Group from '../../../interfaces/Group';
 import { showAlert } from '../alertController';
-import { createNewSensor } from '../../api';
-import Sensor from '../../../interfaces/Sensor';
+import { createNewGroup } from '../../api';
 
 interface ChildProps {
     fetchDataCallback: () => void;
-    groupId: string;
 }
 
-const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) => {
+const NewGroupButton: React.FC<ChildProps> = ({ fetchDataCallback }) => {
     const isDarkTheme = document.getElementById('page-dashboard')?.dataset.bsTheme === 'dark';
     const [validated, setValidated] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
-    const [isPublic, setIsPublic] = useState(false);
+    const [description, setDescription] = useState('');
 
     const handleButtonClick = () => {
         setValidated(false);
         setShowModal(true);
-    };
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setIsPublic(e.target.checked);
     };
 
     const handleCloseModal = () => {
@@ -32,44 +26,20 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
     };
 
     const handleSave = () => {
-        addNewSensor();
+        addNewGroup();
         handleCloseModal();
     };
 
-    const addNewSensor = () => {
-        const group: Sensor = {
+    const addNewGroup = () => {
+        const group: Group = {
             _id: 'generatedId',
             name,
-            isPublic,
-            secretKey: 'generatedId',
-            isActive: false,
-            type: [],
-            alerts: [],
-            settings: [],
-            lastLogs: [],
-            errors: [],
-            batteryStatus: [],
-            currentOptions: {
-                apiUri: '',
-                apiVersion: '',
-                sensorId: '',
-                secretKey: '',
-                dataSendingFrequency: 0,
-                isSendSensorData: false,
-                serverAlwaysLive: false
-            },
-            newOptions: {
-                apiUri: '',
-                apiVersion: '',
-                sensorId: '',
-                secretKey: '',
-                dataSendingFrequency: 0,
-                isSendSensorData: false,
-                serverAlwaysLive: false
-            }
+            description,
+            users: [],
+            sensors: [],
         };
 
-        createNewSensor(group, groupId, fetchDataCallback);
+        createNewGroup(group, fetchDataCallback);
     };
 
     const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
@@ -87,23 +57,17 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
     return (
         <div>
             <Button variant="secondary" onClick={handleButtonClick}>
-                Add new sensor
+                Add new group
             </Button>
             <Modal show={showModal} data-bs-theme={isDarkTheme ? 'dark' : 'white'} className='text-body'>
                 <Modal.Header>
                     <Modal.Title>
-                        Add new sensor
+                        Add new group
                     </Modal.Title>
                 </Modal.Header>
                 <Form noValidate validated={validated} onSubmit={handleSubmitForm}>
                     <Modal.Body>
                         {/* MODAL BODY */}
-
-                        {/* <label>Name:</label>
-                        <input type="text" onChange={(e) => setName(e.target.value)} />
-                        <br />
-                        <label>isPublic:</label>
-                        <input type="checkbox" checked={isPublic} onChange={handleCheckboxChange} /> */}
 
                         <Form.Group as={Col} md="12" controlId="validationNewGroupName" className='mb-3'>
                             <Form.Label>Name</Form.Label>
@@ -114,14 +78,13 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
                         </Form.Group>
 
                         <Form.Group as={Col} md="12" controlId="validationNewGroupDescription" className='mb-3'>
-                            <Form.Label>Is public</Form.Label>
-                            <Form.Check
-                                type="checkbox"
-                                // label="public"
-                                onChange={handleCheckboxChange}
-                            />
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control type="text" placeholder="Description of a new group" required onChange={(e) => setDescription(e.target.value)} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid description.
+                            </Form.Control.Feedback>
                         </Form.Group>
-
+                        
                         {/* MODAL BODY */}
                     </Modal.Body>
                     <Modal.Footer>
@@ -138,4 +101,4 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
     );
 };
 
-export default NewSensorButton;
+export default NewGroupButton;

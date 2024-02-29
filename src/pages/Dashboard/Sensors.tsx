@@ -29,8 +29,6 @@ const Sensors: React.FC = () => {
     };
 
     useEffect(() => {
-        
-
         fetchData();
     }, [sensorId]);
 
@@ -69,7 +67,7 @@ const Sensors: React.FC = () => {
                     <h6>
                         Number of active alerts: {sensor?.alerts.length}
                     </h6>
-                    {sensor ? <EditSensor sensor={sensor} fetchDataCallback={fetchData}/> : ''}
+                    {/* {sensor ? <EditSensor sensor={sensor} fetchDataCallback={fetchData}/> : ''} */}
                 </div>
                 <div className="col bg-body-secondary rounded m-4 p-4">
                     <div>

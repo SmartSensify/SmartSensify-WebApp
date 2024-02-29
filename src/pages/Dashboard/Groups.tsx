@@ -7,14 +7,12 @@ import { useNavigate } from 'react-router-dom';
 
 // Components
 import GroupItem from '../../components/dashboard/GroupItem';
-import NewGroupButton from '../../utils/user_interaction/custom_modals/NewGroupButton';
+import NewGroupButton from '../../utils/user_interaction/custom_modals/AddGroup';
 
 const Groups: React.FC = () => {
     const navigate = useNavigate();
     const [groupData, setGroupData] = useState<Group[] | undefined>([]);
-    const fetchData = async (useCache: boolean = true, event: any = null) => {
-        if (event) event.preventDefault();
-        alert(event);
+    const fetchData = async (useCache: boolean = true) => {
         try {
             setGroupData(await getAllGroups(useCache));
         } catch (error) {
@@ -58,7 +56,7 @@ const Groups: React.FC = () => {
                 <div id='main-menu' className='w-100'>
                     <div className='row'>
                         <div className='col-auto'>
-                            <input type='button' className='btn btn-secondary' value='refresh'  onClick={() => handleRefreshClick()}/>
+                            <input type='button' className='btn btn-secondary' value='Refresh'  onClick={() => handleRefreshClick()}/>
                         </div>
                         <div className='col-auto'>
                             <NewGroupButton fetchDataCallback={() => fetchData(false)} />

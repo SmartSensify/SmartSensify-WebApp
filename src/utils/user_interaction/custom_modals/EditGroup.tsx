@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form, Col } from 'react-bootstrap';
 import Group from '../../../interfaces/Group';
 import { showAlert } from '../alertController';
 import { createNewGroup, editExistingGroup } from '../../api';
@@ -8,15 +8,17 @@ import { createNewGroup, editExistingGroup } from '../../api';
 interface ChildProps {
     group: Group;
     fetchDataCallback: () => void;
-  }
-  
-  const EditGroup: React.FC<ChildProps> = ({ group, fetchDataCallback }) => {
+}
+
+const EditGroup: React.FC<ChildProps> = ({ group, fetchDataCallback }) => {
+    const isDarkTheme = document.getElementById('page-dashboard')?.dataset.bsTheme === 'dark';
+    const [validated, setValidated] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const isDarkTheme = document.getElementById('page-dashboard')?.dataset.bsTheme === 'dark';
 
     const handleButtonClick = () => {
+        setValidated(false);
         setShowModal(true);
     };
 
@@ -43,6 +45,18 @@ interface ChildProps {
         editExistingGroup(group, fetchDataCallback);
     };
 
+    const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        } else {
+            handleSave();
+        }
+        setValidated(true);
+    };
+
     return (
         <div>
             <Button variant="secondary" onClick={handleButtonClick}>
@@ -54,25 +68,37 @@ interface ChildProps {
                         Edit group
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    {/* MODAL BODY */}
+                <Form noValidate validated={validated} onSubmit={handleSubmitForm}>
+                    <Modal.Body>
+                        {/* MODAL BODY */}
 
-                    <label>Name:</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                    <br />
-                    <label>Description:</label>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <Form.Group as={Col} md="12" controlId="validationNewGroupName" className='mb-3'>
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control value={group.name} type="text" placeholder="Name of a new group" required onChange={(e) => setName(e.target.value)} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid name.
+                            </Form.Control.Feedback>
+                        </Form.Group>
 
-                    {/* MODAL BODY */}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleSave}>
-                        Save
-                    </Button>
-                </Modal.Footer>
+                        <Form.Group as={Col} md="12" controlId="validationNewGroupDescription" className='mb-3'>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control value={group.description} type="text" placeholder="Description of a new group" required onChange={(e) => setDescription(e.target.value)} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid description.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        {/* MODAL BODY */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            Close
+                        </Button>
+                        <Button type="submit">
+                            Save
+                        </Button>
+                    </Modal.Footer>
+                </Form>
             </Modal>
         </div>
     );
