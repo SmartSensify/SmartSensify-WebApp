@@ -25,7 +25,6 @@ const MyMap: React.FC<MapProps> = ({ latitude, longitude, sensorName }) => {
 
     return (
         <div>
-            <h6>Localization Map</h6>
             {position && (
                 <MapContainer
                     center={position}
@@ -34,7 +33,7 @@ const MyMap: React.FC<MapProps> = ({ latitude, longitude, sensorName }) => {
                 >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <Marker position={position}>
                         <Popup>{sensorName || 'Sensor'}</Popup>

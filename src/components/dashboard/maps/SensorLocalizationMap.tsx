@@ -19,9 +19,14 @@ const SensorLocalizationMap: React.FC<SensorLocalizationMapProps> = ({ sensor })
     const position: [number, number] = [latitude || 0, longitude || 0];
 
     return (
-        <div>
-            <h6>Localization Map</h6>
-            <MyMap latitude={latitude} longitude={longitude} sensorName={sensor?.name} />
+        <div className="row" >
+            <div className="col col-md-4">
+                <p>Latitude: </p><p>{latitude}</p>
+                <p>Longitude: </p><p>{longitude}</p>
+            </div>
+            <div className="col col-md-4">
+                <MyMap latitude={latitude} longitude={longitude} sensorName={sensor?.name} />
+            </div>
         </div>
     );
 };
