@@ -73,6 +73,11 @@ export const getAllSensorsByGroup = async (groupId: String): Promise<Sensor[] | 
     return cacheAllSensors(groupId);
 };
 
+export const getAllSensors = async (): Promise<Sensor[] | undefined> => {
+    const response = apiRequest<Sensor[]>('get', `${BASE_URL}/sensors?showOwned=true`, { }, ()=>{}, '',false);
+    return response;
+}
+
 // TODO: Function for refactorization
 export const getPublicSensors = async (): Promise<Sensor[]> => {
     try {
@@ -91,7 +96,8 @@ const apiRequest = async <T>(
     url: string,
     data: object,
     callback: () => void,
-    requestId: string = ''
+    requestId: string = '',
+    showAlertFlag = true,
 ): Promise<T | undefined> => {
     if (!checkAuthentication()) return undefined;
     try {
@@ -106,7 +112,7 @@ const apiRequest = async <T>(
 
         const response = await axios(config);
 
-        showAlert({
+        if (showAlertFlag)showAlert({
             Header: 'Success',
             Message: `${(data as Group).name || ''} ${getSuccessMessage(method)}`,
             Type: 'success',
