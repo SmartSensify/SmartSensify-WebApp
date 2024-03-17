@@ -9,7 +9,7 @@ const SensorItem: React.FC<{ sensor: Sensor; handleSensorClick: (sensorId: strin
             </span>
             <h4 className="text-center mt-2 mb-1">{sensor?.name}</h4>
             <p className="text-center mb-1">ID: {sensor?._id}</p>
-            <p className="text-center">Types: {sensor?.type?.join(', ')}</p>
+            <p className="text-center">Types: {sensor?.types?.join(', ')}</p>
         </div>
     );
 };

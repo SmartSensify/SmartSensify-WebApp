@@ -202,3 +202,15 @@ export const getSensorData = async (
         throw error;
     }
 };
+
+/* Sensor alert POST */
+
+export const createAlert = async (sensorId : string, sensorType: string, condition: string, conditionNumber: number, action: string, callback: () => void): Promise<boolean | undefined> => {
+    try {
+        const response = apiRequest<Group>('post', `${BASE_URL}/alerts`, { sensorId: sensorId, sensorType: sensorType, condition: condition, conditionNumber: conditionNumber, action: action}, callback);
+        return true;
+    } catch (erorr) {
+        console.log(erorr);
+        return false;
+    }
+}

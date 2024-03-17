@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form, Col } from 'react-bootstrap';
-import Group from '../../../interfaces/Group';
-import { showAlert } from '../alertController';
-import { createNewSensor } from '../../api';
-import Sensor from '../../../interfaces/Sensor';
+import Group from '../../../../interfaces/Group';
+import { showAlert } from '../../alertController';
+import { createNewSensor } from '../../../api';
+import Sensor from '../../../../interfaces/Sensor';
 
 interface ChildProps {
     sensor: Sensor

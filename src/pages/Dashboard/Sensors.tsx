@@ -12,7 +12,8 @@ import { SensorData } from '../../interfaces/SensorData';
 // Components
 import SensorLocalizationMap from '../../components/dashboard/maps/SensorLocalizationMap';
 import EditSensor from '../../utils/user_interaction/custom_modals/EditSensor';
-import SensorSettings from '../../utils/user_interaction/custom_modals/SensorSettings';
+import SensorSettings from '../../utils/user_interaction/custom_modals/sensor/SensorSettings';
+import CreateNewAlert from '../../utils/user_interaction/custom_modals/sensor/CreateNewAlert';
 
 const Sensors: React.FC = () => {
     const { sensorId } = useParams<{ sensorId: string }>();
@@ -84,11 +85,12 @@ const Sensors: React.FC = () => {
                     <h6 className='text-secondary'>Managing</h6>
                     <div className="row">
                         {sensor ? <SensorSettings sensor={sensor} /> : <button className='btn btn-secondary col-md-12 mt-4'>Settings</button>}
-                        <button className='btn btn-secondary col-md-12 mt-4'>Alerts</button>
+                        {sensor ? <CreateNewAlert sensor={sensor} /> : <button className='btn btn-secondary col-md-12 mt-4'>Create new alert</button>}
+                        {/* <button className='btn btn-secondary col-md-12 mt-4'>Alerts</button> */}
                     </div>
                     <div className="row">
-                        <button className='btn btn-secondary col-md-12 mt-4'>Logs</button>
-                        <button className='btn btn-secondary col-md-12 mt-4'>Error</button>
+                        {/* <button className='btn btn-secondary col-md-12 mt-4'>Logs</button>
+                        <button className='btn btn-secondary col-md-12 mt-4'>Error</button> */}
                     </div>
                 </div>
                 <div className="col bg-body-secondary rounded m-4 px-4 py-2 container">

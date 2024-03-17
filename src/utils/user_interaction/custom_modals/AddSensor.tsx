@@ -43,7 +43,7 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
             isPublic,
             secretKey: 'generatedId',
             isActive: false,
-            type: [],
+            types: [],
             alerts: [],
             settings: [],
             lastLogs: [],
@@ -107,7 +107,7 @@ const NewSensorButton: React.FC<ChildProps> = ({ fetchDataCallback, groupId }) =
 
                         <Form.Group as={Col} md="12" controlId="validationNewGroupName" className='mb-3'>
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="Name of a new group" required onChange={(e) => setName(e.target.value)} />
+                            <Form.Control type="text" placeholder="Name of a new sensor" required onChange={(e) => setName(e.target.value)} />
                             <Form.Control.Feedback type="invalid">
                                 Please provide a valid name.
                             </Form.Control.Feedback>
